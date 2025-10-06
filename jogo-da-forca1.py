@@ -1,101 +1,42 @@
-import random
 
-# Lista de palavras para o jogo
-palavras = ["python", "java", "javascript", "forca", "computador", "desenvolvimento"]
+     # Jogo da Forca
+palavra = "tecnologia"
+letras_descobertas = ["_"] * len(palavra)
+tentativas = 6
+letras_usadas = []
 
-# Função para exibir o desenho do boneco com base no número de erros
-def exibir_boneco(erros):
-    bonecos = [
-        """
-        ------
-        |    |
-             |
-             |
-             |
-             |
-             |
-        -----|-----""",
-        
-        """
-        ------
-        |    |
-        O    |
-             |
-             |
-             |
-             |
-        -----|-----""",
-        
-        """
-        ------
-        |    |
-        O    |
-        |    |
-             |
-             |
-             |
-        -----|-----""",
-        
-        """
-        ------
-        |    |
-        O    |
-       /|    |
-             |
-             |
-             |
-        -----|-----""",
-        
-        """
-        ------
-        |    |
-        O    |
-       /|\\   |
-             |
-             |
-             |
-        -----|-----""",
-        
-        """
-        ------
-        |    |
-        O    |
-       /|\\   |
-       /     |
-             |
-             |
-        -----|-----""",
-        
-        """
-        ------
-        |    |
-        O    |
-       /|\\   |
-       / \\   |
-             |
-             |
-        -----|-----"""
-    ]
-    print(bonecos[erros])
+print("🎯 Jogo da Forca! Adivinhe a palavra letra por letra.")
 
-# Função principal do jogo da forca
-def jogo_da_forca():
-    palavra = random.choice(palavras)  # Escolher uma palavra aleatória
-    letras_corretas = ["_"] * len(palavra)  # Iniciar as letras corretas como underscores
-    letras_erradas = []  # Lista para armazenar as letras erradas
-    erros = 0  # Contador de erros
+while tentativas > 0:
+    print("\nPalavra:", " ".join(letras_descobertas))
+    letra = input("Digite uma letra (ou 'sair' para desistir): ").lower()
 
-    print("Bem-vindo ao jogo da Forca!")
-    
-    while erros < 6:  # O jogador tem no máximo 6 erros
-        # Exibir o estado atual do boneco
-        exibir_boneco(erros)
-        
-        # Exibir as letras corretas e as erradas
-        print("Palavra: " + " ".join(letras_corretas))
-        print("Letras erradas: " + ", ".join(letras_erradas))
-        
-        # Solicitar a letra do jogador
-        letra = input("Digite uma letra: ").lower()
+    if letra == "sair":
+        print("Você desistiu do jogo.")
+        break  # Interrompe o loop
 
-        # Validar
+    if not letra.isalpha() or len(letra) != 1:
+        print("Entrada inválida. Digite apenas uma letra.")
+        continue  # Pula para a próxima iteração
+
+    if letra in letras_usadas:
+        print("Você já tentou essa letra.")
+        pass  # Não faz nada, apenas segue o fluxo
+    else:
+        letras_usadas.append(letra)
+
+    if letra in palavra:
+        for i in range(len(palavra)):
+            if palavra[i] == letra:
+                letras_descobertas[i] = letra
+        print("✅ Boa! Letra correta.")
+    else:
+        tentativas -= 1
+        print("❌ Letra errada. Tentativas restantes:", tentativas)
+
+    if "_" not in letras_descobertas:
+        print("\n🏆 Parabéns! Você descobriu a palavra:", palavra)
+        break  # Vitória, encerra o loop
+
+if tentativas == 0:
+    print("\n💀 Fim de jogo! A palavra era:", palavra)
